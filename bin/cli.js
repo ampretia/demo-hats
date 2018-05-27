@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+
 'use strict';
 
 const fs = require('fs');
@@ -9,10 +12,11 @@ const util = require('../lib/util.js');
 
 const http = require('http');
 const puppeteer = require('puppeteer');
+const boxen = require('boxen');
 
 let args = require('yargs')
     .usage('Usage: $0 [options]')
-    .example('$0 count -f foo.js', 'count the lines in the given file')
+    .example('$0 [-c config.json]', 'Startsup Demo-hats')
     .alias('c', 'config')
     .nargs('c', 1)
     .describe('c', 'Configuration file - ./hats.json is the default')
@@ -25,19 +29,13 @@ if (args.c){
     filename = path.resolve(sanitize(args.c));
 }
 
-let cfg = JSON.parse(fs.readFileSync(filename));
-
-/*
-
-{ 'alice' : {
-    'uri':'htppp',
-    'avatar':',,,png',
-    'startState':'open|focus'
-    "displayName"
-},
-  }
-
-*/
+let cfg;
+if (fs.existsSync(filename)){
+    cfg = JSON.parse(fs.readFileSync(filename));
+} else {
+    console.log(`Configuration file ${filename} not located.`);
+    process.exit(1);
+}
 
 let keys = Object.keys(cfg);
 for (let k of keys){
@@ -74,7 +72,7 @@ let app = require('../lib/app');
 /**
  * Get port from environment and store in Express.
  */
-let port = util.normalizePort(process.env.PORT || '3000');
+let port = util.normalizePort(process.env.PORT || '3456');
 app.set('port', port);
 
 /**
@@ -99,7 +97,6 @@ io.on('connection', function(socket){
             return e===msg;
         });
         debug(`Using ${msg} ${qrAction}`);
-        console.log(cfg);
         if (qrAction && cfg[qrAction]){
             cfg[qrAction].page.bringToFront();
         }
@@ -124,11 +121,11 @@ server.on('error', (error) => {
     // handle specific listen errors with friendly messages
     switch (error.code) {
     case 'EACCES':
-        debug(bind + ' requires elevated privileges');
+        console.log(bind + ' requires elevated privileges');
         process.exit(1);
         break;
     case 'EADDRINUSE':
-        debug(bind + ' is already in use');
+        console.log(bind + ' is already in use');
         process.exit(1);
         break;
     default:
@@ -142,24 +139,36 @@ server.on('listening', () =>{
     let addr = server.address();
     let bind = typeof addr === 'string'
         ? 'pipe ' + addr
-        : 'port ' + addr.port;
-    debug('Listening on ' + bind);
+        : addr.port;
+
+    let message = `Demo-hats control page available on http://localhost:${bind}/`;
+    console.log(
+        boxen(message, {
+            padding: 1,
+            borderColor: 'green',
+            margin: 1
+        })
+    );
+
+
 });
 
 
 (async () => {
     app.set('cfg',cfg);
 
-    const browser = await puppeteer.launch({headless:false});
-
-    let keys = Object.keys(cfg);
-    for (let k of keys){
-        let setting = cfg[k];
-        setting.page = await browser.newPage();
-        await setting.page.goto(setting.uri);
+    try {
+        const browser = await puppeteer.launch({headless:false});
+        let keys = Object.keys(cfg);
+        for (let k of keys){
+            let setting = cfg[k];
+            setting.page = await browser.newPage();
+            await setting.page.goto(setting.uri);
+        }
+    } catch (error){
+        console.log(error);
+        process.exit(1);
     }
-
-
 
 })();
 
