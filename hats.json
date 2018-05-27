@@ -1,0 +1,58 @@
+{
+    "alice": {
+        "uri": "http://localhost:3000/users/alice",
+        "avatar": "images/alice.png",
+        "startState": "open",
+        "displayName": "Alice",
+        "bio": "Entrepreneur. Gamer. Explorer. Proud beer lover. Troublemaker. Twitter guru. Organizer."
+    },
+    "bob": {
+        "uri": "http://localhost:3000/users/bob",
+        "avatar": "images/bob.png",
+        "startState": "open",
+        "displayName": "Bob",
+        "bio":"Award-winning web guru. Unapologetic alcohol practitioner. Travel fanatic. Beer ninja. Reader."
+    },
+    "chloe": {
+        "uri": "http://localhost:3000/users/chloe",
+        "avatar": "images/chloe.png",
+        "startState": "open",
+        "displayName": "Chloe",
+        "bio":  "Award-winning food buff. Communicator. Infuriatingly humble zombieaholic. Total music fanatic."
+    },
+    "dan": {
+        "uri": "http://localhost:3000/users/dan",
+        "avatar": "images/dan.png",
+        "startState": "open",
+        "displayName": "dan",
+        "bio": "Re organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+    },
+    "eve": {
+        "uri": "http://localhost:3000/users/eve",
+        "avatar": "images/eve.png",
+        "startState": "open",
+        "displayName": "Eve",
+        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+    },
+    "frank": {
+        "uri": "http://localhost:3000/users/frank",
+        "avatar": "images/frank.png",
+        "startState": "open",
+        "displayName": "Frank",
+        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+    },
+    "grace": {
+        "uri": "http://localhost:3000/users/grace",
+        "avatar": "images/grace.png",
+        "startState": "open",
+        "displayName": "Grace",
+        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+    },
+    "harry": {
+        "uri": "http://localhost:3000/users/harry",
+        "avatar": "images/harry.png",
+        "startState": "open",
+        "displayName": "Harry",
+        "bio": "Wannabe music scholar. Professional pop culture enthusiast. Hipster-friendly writer. General bacon geek. Subtly charming coffee expert."
+    }
+}
