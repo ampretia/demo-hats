@@ -36,7 +36,7 @@
       </div>
     </div>
   </section>
-  <section class="section" >
+  <section class="section">
     <div class="container">
       <div class="columns">
         <!-- Left side -->
@@ -46,14 +46,15 @@
           </div>
         </div>
         <div class="column">
-         
+
           <div id="output" class="notification is-info">
             <h2 class="subtitle is-2">Who can I see?</h2>
             <span id="outputData" class="subtitle is-3"></span>
           </div>
           <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
 
-          <a class="button is-success">Reset tabs</a>
+          {{!--
+          <a class="button is-success">Reset tabs</a> --}}
         </div>
 
 
@@ -107,14 +108,34 @@
                 </span>
               </p>
               <p class="card-footer-item">
-                <span>
-                  <a class="button" href="#">Show QR Code</a>
+                <span class="button show-modal-btn" data-modal="{{this.id}}-modal">Show QR Code
                 </span>
               </p>
             </footer>
           </div>
 
         </div>
+
+        <div class="modal" id="{{this.id}}-modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">{{this.displayName}}</p>
+              <button class="delete close-modal" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+              <figure class="image is-128x128">
+                <img src="/images/qrs/{{this.id}}.png" alt="QR for {{this.displayName}}">
+              </figure>
+            </section>
+            <footer class="modal-card-foot">
+              <a href="/images/qrs/{{this.id}}.png" download class="button is-success">Download QR Image</a>
+              <button class="button  close-modal">Close</button>
+            </footer>
+          </div>
+        </div>
+
+
         {{/each}}
 
       </div>
@@ -127,7 +148,20 @@
 
     function addEvent(el, type, handler) {
       if (el.attachEvent) el.attachEvent('on' + type, handler); else el.addEventListener(type, handler);
-    }    
+    }
+    function hasClass(el, className) {
+      return el.classList ? el.classList.contains(className) : new RegExp('\\b' + className + '\\b').test(el.className);
+    }
+
+    function addClass(el, className) {
+      if (el.classList) el.classList.add(className);
+      else if (!hasClass(el, className)) el.className += ' ' + className;
+    }
+
+    function removeClass(el, className) {
+      if (el.classList) el.classList.remove(className);
+      else el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+    }
 
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -136,6 +170,8 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+
+    var currentModal;
 
     // setup socket io
     var socket = io();
@@ -160,11 +196,30 @@
         socket.emit('qr', evt.srcElement.id)
       })
     });
-    
-  socket.on('valid', function(msg){
-    console.log(msg);
-    validIds = msg;
-  });
+
+    var elsmodal = document.querySelectorAll('.show-modal-btn');
+    elsmodal.forEach((el) => {
+      // attach anonymous function to click event
+      addEvent(el, 'click', function (evt) {
+        console.log(evt.srcElement.dataset.modal);
+        currentmodal = document.getElementById(evt.srcElement.dataset.modal);
+        addClass(currentmodal, "is-active");
+      })
+    });
+
+    var elsclosemodal = document.querySelectorAll('.close-modal');
+    elsclosemodal.forEach((el) => {
+      // attach anonymous function to click event
+      addEvent(el, 'click', function (evt) {
+        console.log(evt.srcElement.dataset.modal);
+        removeClass(currentmodal, "is-active");
+      })
+    });
+
+    socket.on('valid', function (msg) {
+      console.log(msg);
+      validIds = msg;
+    });
 
     // Use facingMode: environment to attemt to get the front camera on phones
     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
@@ -193,9 +248,9 @@
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
           //  outputMessage.hidden = true;
           //   outputData.parentElement.hidden = false;
-         
-          if (validIds.includes(code.data)){
-             outputData.innerText = code.data;
+
+          if (validIds.includes(code.data)) {
+            outputData.innerText = code.data;
             document.getElementById('myAudio').play();
             socket.emit('qr', code.data);
           }
