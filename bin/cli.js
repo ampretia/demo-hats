@@ -4,7 +4,7 @@
 'use strict';
 
 const fs = require('fs');
-const sanitize = require('sanitize-filename');
+
 const path = require('path');
 
 const debug = require('debug')('hats:server');
@@ -26,17 +26,18 @@ let args = require('yargs')
 
 let filename = path.resolve('./hats.json');
 if (args.c){
-    filename = path.resolve(sanitize(args.c));
+    filename = path.resolve(args.c);
 }
 
-let cfg;
+let fullcfg;
 if (fs.existsSync(filename)){
-    cfg = JSON.parse(fs.readFileSync(filename));
+    fullcfg = JSON.parse(fs.readFileSync(filename));
 } else {
     console.log(`Configuration file ${filename} not located.`);
     process.exit(1);
 }
-
+//todo rename
+let cfg=fullcfg.personas;
 let keys = Object.keys(cfg);
 for (let k of keys){
     let setting = cfg[k];
@@ -84,7 +85,11 @@ let io = require('socket.io')(server);
 io.on('connection', function(socket){
     debug('Ctrl page connected');
 
-    socket.emit('valid',keys);
+    let mapping={};
+    keys.forEach(function(e){
+        mapping[e] = cfg[e].displayName;
+    });
+    socket.emit('valid',mapping);
 
     socket.on('disconnect', function(){
         debug('Ctrl page disconnected');
@@ -156,15 +161,20 @@ server.on('listening', () =>{
 
 (async () => {
     app.set('cfg',cfg);
+    app.set('info',fullcfg.info);
 
     try {
-        const browser = await puppeteer.launch({headless:false});
+        const browser = await puppeteer.launch({headless:false,args: ['--disable-infobars']});
         let keys = Object.keys(cfg);
         for (let k of keys){
             let setting = cfg[k];
             setting.page = await browser.newPage();
             await setting.page.goto(setting.uri);
+            await setting.page._client.send('Emulation.clearDeviceMetricsOverride');
         }
+        let welcomePage = await browser.newPage();
+        await welcomePage.goto('http://localhost:3456/welcome');
+        await welcomePage._client.send('Emulation.clearDeviceMetricsOverride');
     } catch (error){
         console.log(error);
         process.exit(1);

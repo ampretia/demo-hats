@@ -1,58 +1,64 @@
 {
-    "alice": {
-        "uri": "http://localhost:3456/users/alice",
-        "avatar": "images/alice.png",
-        "startState": "open",
-        "displayName": "Alice",
-        "bio": "Entrepreneur. Gamer. Explorer. Proud beer lover. Troublemaker. Twitter guru. Organizer."
+    "info": {
+        "title":"Letters of Credit Scenario",
+        "summary":"Scenario showing how the issuing and approval of letters of credit is streamlined using Hyperleder Fabric and Composer"
     },
-    "bob": {
-        "uri": "http://localhost:3456/users/bob",
-        "avatar": "images/bob.png",
-        "startState": "open",
-        "displayName": "Bob",
-        "bio":"Award-winning web guru. Unapologetic alcohol practitioner. Travel fanatic. Beer ninja. Reader."
-    },
-    "chloe": {
-        "uri": "http://localhost:3456/users/chloe",
-        "avatar": "images/chloe.png",
-        "startState": "open",
-        "displayName": "Chloe",
-        "bio":  "Award-winning food buff. Communicator. Infuriatingly humble zombieaholic. Total music fanatic."
-    },
-    "dan": {
-        "uri": "http://localhost:3456/users/dan",
-        "avatar": "images/dan.png",
-        "startState": "open",
-        "displayName": "dan",
-        "bio": "Re organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
-    },
-    "eve": {
-        "uri": "http://localhost:3456/users/eve",
-        "avatar": "images/eve.png",
-        "startState": "open",
-        "displayName": "Eve",
-        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
-    },
-    "frank": {
-        "uri": "http://localhost:3456/users/frank",
-        "avatar": "images/frank.png",
-        "startState": "open",
-        "displayName": "Frank",
-        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
-    },
-    "grace": {
-        "uri": "http://localhost:3456/users/grace",
-        "avatar": "images/grace.png",
-        "startState": "open",
-        "displayName": "Grace",
-        "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
-    },
-    "harry": {
-        "uri": "http://localhost:3456/users/harry",
-        "avatar": "images/harry.png",
-        "startState": "open",
-        "displayName": "Harry",
-        "bio": "Wannabe music scholar. Professional pop culture enthusiast. Hipster-friendly writer. General bacon geek. Subtly charming coffee expert."
+    "personas": {
+        "alice": {
+            "uri": "http://localhost:3456/users/alice",
+            "avatar": "images/alice-person.png",
+            "startState": "open",
+            "displayName": "Alice",
+            "bio": "Entrepreneur. Gamer. Explorer. Proud beer lover. Troublemaker. Twitter guru. Organizer."
+        },
+        "bob": {
+            "uri": "http://localhost:3456/users/bob",
+            "avatar": "images/bob-person.png",
+            "startState": "open",
+            "displayName": "Matias",
+            "bio": "Award-winning web guru. Unapologetic alcohol practitioner. Travel fanatic. Beer ninja. Reader."
+        },
+        "chloe": {
+            "uri": "http://localhost:3456/users/chloe",
+            "avatar": "images/chloe.png",
+            "startState": "open",
+            "displayName": "Chloe",
+            "bio": "Award-winning food buff. Communicator. Infuriatingly humble zombieaholic. Total music fanatic."
+        },
+        "dan": {
+            "uri": "http://localhost:3456/users/dan",
+            "avatar": "images/dan.png",
+            "startState": "open",
+            "displayName": "dan",
+            "bio": "Re organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+        },
+        "eve": {
+            "uri": "http://localhost:3456/users/eve",
+            "avatar": "images/eve.png",
+            "startState": "open",
+            "displayName": "Eve",
+            "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+        },
+        "frank": {
+            "uri": "http://localhost:3456/users/frank",
+            "avatar": "images/frank.png",
+            "startState": "open",
+            "displayName": "Frank",
+            "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+        },
+        "grace": {
+            "uri": "http://localhost:3456/users/grace",
+            "avatar": "images/grace.png",
+            "startState": "open",
+            "displayName": "Grace",
+            "bio": "Avid organizer. Hipster-friendly food expert. Total tv practitioner. Friend of animals everywhere. Lifelong reader."
+        },
+        "harry": {
+            "uri": "http://localhost:3456/users/harry",
+            "avatar": "images/harry.png",
+            "startState": "open",
+            "displayName": "Harry",
+            "bio": "Wannabe music scholar. Professional pop culture enthusiast. Hipster-friendly writer. General bacon geek. Subtly charming coffee expert."
+        }
     }
 }

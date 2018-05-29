@@ -2,7 +2,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>jsQR Demo</title>
+  <title>{{info.title}}</title>
   <script src="./javascripts/jsQR.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
@@ -31,7 +31,6 @@
         </div>
         <div class="media-content">
           <h1 class="title is-1">{{info.title}}</h1>
-          <p id="go-btn" class="button is-dark">Powered by demo-hats - Ready to go?</p>
         </div>
       </div>
     </div>
@@ -39,24 +38,8 @@
   <section class="section">
     <div class="container">
       <div class="columns">
-        <!-- Left side -->
-        <div class="column">
-          <div class="level-item">
-            <canvas id="canvas" hidden></canvas>
-          </div>
-        </div>
-        <div class="column">
-
-          <div id="output" class="notification is-info">
-            <h2 class="subtitle is-2">Who can I see?</h2>
-            <span id="outputData" class="subtitle is-3"></span>
-          </div>
-          <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-
-          {{!--
-          <a class="button is-success">Reset tabs</a> --}}
-        </div>
-
+       
+        <p class="is-size-4">{{info.summary}}</p>
 
 
       </div>
@@ -103,11 +86,6 @@
             </div>
             <footer class="card-footer">
               <p class="card-footer-item">
-                <span class="button app-select-btn" id={{this.id}}>
-                  Select
-                </span>
-              </p>
-              <p class="card-footer-item">
                 <span class="button show-modal-btn" data-modal="{{this.id}}-modal">Show QR Code
                 </span>
               </p>
@@ -142,7 +120,7 @@
     </div>
     {{/each}}
   </section>
-  <audio id="myAudio" src="images/confirm.wav"></audio>
+
 
   <script>
 
@@ -163,40 +141,10 @@
       else el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
     }
 
-    var video = document.createElement("video");
-    var canvasElement = document.getElementById("canvas");
-    var canvas = canvasElement.getContext("2d");
-    var loadingMessage = document.getElementById("loadingMessage");
-    var outputContainer = document.getElementById("output");
-    var outputMessage = document.getElementById("outputMessage");
-    var outputData = document.getElementById("outputData");
 
     var currentModal;
 
-    // setup socket io
-    var socket = io();
-    let buffer = '';
-    let validIds;
-    let mapping;
 
-    function drawLine(begin, end, color) {
-      canvas.beginPath();
-      canvas.moveTo(begin.x, begin.y);
-      canvas.lineTo(end.x, end.y);
-      canvas.lineWidth = 4;
-      canvas.strokeStyle = color;
-      canvas.stroke();
-    }
-
-
-    var els = document.querySelectorAll('.app-select-btn');
-    els.forEach((el) => {
-      // attach anonymous function to click event
-      addEvent(el, 'click', function (evt) {
-        console.log(evt.srcElement.id);
-        socket.emit('qr', evt.srcElement.id)
-      })
-    });
 
     var elsmodal = document.querySelectorAll('.show-modal-btn');
     elsmodal.forEach((el) => {
@@ -217,52 +165,8 @@
       })
     });
 
-    socket.on('valid', function (msg) {
-      console.log(msg);
-      mapping = msg;
-      validIds = Object.keys(msg);
-    });
 
-    // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      video.play();
-      requestAnimationFrame(tick);
-    });
-
-    function tick() {
-      loadingMessage.innerText = "⌛ Loading video..."
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        loadingMessage.hidden = true;
-        canvasElement.hidden = false;
-        outputContainer.hidden = false;
-
-        canvasElement.height = video.videoHeight;
-        canvasElement.width = video.videoWidth;
-        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        var code = jsQR(imageData.data, imageData.width, imageData.height);
-        if (code) {
-          drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-          drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-          drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-          drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-
-          if (validIds.includes(code.data)) {
-            outputData.innerText = mapping[code.data];
-            document.getElementById('myAudio').play();
-            socket.emit('qr', code.data);
-          }
-
-        } else {
-          //  outputMessage.hidden = false;
-          //  outputData.parentElement.hidden = true;
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-  </script>
+     </script>
 </body>
 
 </html>
