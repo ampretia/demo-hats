@@ -1,7 +1,6 @@
 {
   "name": "demo-hats",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.2",
   "scripts": {
     "start": "node ./bin/cli.s"
   },

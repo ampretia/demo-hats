@@ -1,7 +1,7 @@
 {
     "info": {
-        "title":"Letters of Credit Scenario",
-        "summary":"Scenario showing how the issuing and approval of letters of credit is streamlined using Hyperleder Fabric and Composer"
+        "title":"People of Interest",
+        "summary":"Scenario showing how how to show different webpages for different personas "
     },
     "personas": {
         "alice": {
